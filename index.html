@@ -6,112 +6,48 @@
 <title>Casino Roulette</title>
 <style>
   body {
-    margin: 0;
-    padding: 0;
+    margin: 0; padding: 0;
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #ffecd2, #fcb69f);
     color: #222;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-start;
   }
   h1 { margin-top: 10px; text-align: center; }
   #roulette-container {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    margin-top: 20px;
+    position: relative; width: 300px; height: 300px; margin-top: 20px;
   }
   #roulette {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     border-radius: 50%;
     border: 5px solid #fff;
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
     box-shadow: 0 0 15px #f0f, 0 0 25px #0ff;
+    transition: transform 4s cubic-bezier(0.33,1,0.68,1);
   }
   .slice {
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    top: 50%;
-    left: 50%;
-    transform-origin: 0% 0%;
+    position: absolute; width: 50%; height: 50%;
+    top: 50%; left: 50%; transform-origin: 0% 0%;
     clip-path: polygon(0 0, 100% 0, 0 100%);
   }
   #indicator {
-    position: absolute;
-    top: -10px;
-    left: 50%;
+    position: absolute; top:-10px; left:50%;
     transform: translateX(-50%);
-    width: 20px;
-    height: 20px;
-    background: red;
+    width:20px; height:20px;
+    background:red;
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    z-index: 10;
+    z-index:10;
   }
-  #controls {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
-  button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: transform 0.2s;
-  }
+  #controls { margin-top:20px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  button { padding:10px 15px; border:none; border-radius:10px; cursor:pointer; font-weight:bold; transition: transform 0.2s; }
   button:hover { transform: scale(1.1); }
-  #players {
-    margin-top: 20px;
-    width: 90%;
-  }
-  .player {
-    margin-bottom: 10px;
-    padding: 10px;
-    background: rgba(255,255,255,0.3);
-    border-radius: 10px;
-  }
-  #links {
-    margin-top: 20px;
-    display: flex;
-    overflow-x: auto;
-    gap: 10px;
-    padding-bottom: 10px;
-    width: 100%;
-  }
-  #links button {
-    flex: 0 0 auto;
-  }
-  #popup {
-    position: fixed;
-    top:0; left:0;
-    width: 100%; height:100%;
-    background: rgba(0,0,0,0.7);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-  }
-  #popup-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-  }
-  input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 10px;
-  }
+  #players { margin-top:20px; width:90%; }
+  .player { margin-bottom:10px; padding:10px; background:rgba(255,255,255,0.3); border-radius:10px; }
+  #links { margin-top:20px; display:flex; overflow-x:auto; gap:10px; padding-bottom:10px; width:100%; }
+  #links button { flex:0 0 auto; }
+  #popup { position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); display:none; align-items:center; justify-content:center; z-index:100; }
+  #popup-content { background:#fff; padding:20px; border-radius:15px; width:90%; max-width:400px; text-align:center; }
+  input[type="text"] { width:100%; padding:8px; margin-top:10px; }
 </style>
 </head>
 <body>
@@ -149,7 +85,7 @@
     <p>Bénéficiaires:</p>
     <p>1. Loveline Wirnkar - 676353859</p>
     <p>2. Bibi OM - 656523656</p>
-    <p>Ou utilisez le code admin: 233233</p>
+    <p></p></p>
     <input type="text" id="transactionInput" placeholder="Collez le message de transaction">
     <button onclick="validateTransaction()">Valider</button>
     <button onclick="closePopup()">Annuler</button>
@@ -201,6 +137,14 @@
       alert('Choisissez une couleur avant de tourner!');
       return;
     }
+    if(players[currentPlayer].jetons<100){
+      alert('Pas assez de jetons, achetez-en!');
+      return;
+    }
+
+    players[currentPlayer].jetons-=100;
+    updatePlayers();
+
     let spins=Math.floor(Math.random()*10)+10;
     let anglePerSlice = 360/colors.length;
     let finalSlice = Math.floor(Math.random()*colors.length);
@@ -217,8 +161,6 @@
         players[currentPlayer].jetons+=100;
       } else {
         alert('Vous perdez 100 jetons!');
-        players[currentPlayer].jetons-=100;
-        if(players[currentPlayer].jetons<0) players[currentPlayer].jetons=0;
       }
       currentPlayer=(currentPlayer+1)%players.length;
       updatePlayers();
@@ -257,4 +199,4 @@
 </script>
 
 </body>
-  </html>
+</html>
